@@ -1,25 +1,48 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from 'react-router-dom';
+import ApolloClient from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { HttpLink } from 'apollo-link-http';
+import { ApolloProvider } from '@apollo/react-hooks';
+import Header from './components/Header'
+import Home from './pages/Home';
+import Destination from './pages/Destination'
+
+const createApolloClient = () => {
+  return new ApolloClient({
+    link: new HttpLink({
+      uri: 'https://sti-hasura-graphql-16042019.herokuapp.com/v1/graphql',
+      options: {
+        reconnect: true,
+        
+      }
+    }),
+    cache: new InMemoryCache(),
+  });
+ };
+
 
 function App() {
+
+  const client = createApolloClient();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ApolloProvider client={client}>
+      <Router>
+        <Header src="https://res.cloudinary.com/studytoursindia/image/upload/c_scale,w_400/v1582391567/sti/signboard-design_bpvrc9.png"/>
+        <Switch>
+        
+          <Route path="/destination" component={Destination}/>
+          <Route path="/" component={Home} />
+        </Switch>
+      </Router>
+    
+    </ApolloProvider>
   );
 }
 
