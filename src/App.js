@@ -8,7 +8,7 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import Destination from './pages/Destination';
 import Example from './pages/Example';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 const createApolloClient = () => {
     return new ApolloClient({
